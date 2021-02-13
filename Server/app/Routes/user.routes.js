@@ -1,4 +1,4 @@
-const { validateRegistrationRequest, isRequestValidated, requireAuthorization } = require('../validators/auth')
+const { validateRegistrationRequest, isRequestValidated, requireAuthorization } = require('../Validators/auth')
 
 module.exports = (app) => {
     const user = require('../Controller/user.controller')

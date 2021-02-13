@@ -1,22 +1,25 @@
 const Category = require('../Models/category.model')
 const Response = require('../Helper/response')
+const slugify = require('slugify')
 
 
 exports.createCategory = (req,res) => {
    try {
 
-        const { category_name } = req.body
+       const categoryObj = {
+           category_name : req.body.category_name,
+           slug:slugify(req.body.category_name)
+       }
 
-        if(!isNaN(category_name)) {
-            return Response.sendFailedmsg(res,'Invalid Category Name')
+        if(req.body.parent_id) {
+           categoryObj.parent_id = req.body.parent_id
         }
-
-        const category = new Category({
-            category_name
-        })
+        const category = new Category(categoryObj)
 
         category.save().then((data) => {
-            return Response.sendSuccesmsg(res,'Category Created')
+            
+            return Response.sendSuccesmsg(res,'Category Created',{data})
+            
         })
         .catch(err =>{
             return Response.sendFailedmsg(res,'Failed to Add Category',err.message)
@@ -42,5 +45,18 @@ exports.getCategory = (req, res) => {
     }
     catch(err) {
         res.send([])
+    }
+}
+
+
+exports.deleteCategory = (req,res) => {
+    try {
+
+        Category.deleteMany({}).then((data) => {
+            res.status(200).json({message : 'Deleted'})
+        })
+    }
+    catch(err) {
+        res.send(err.message)
     }
 }

@@ -26,9 +26,22 @@ exports.isRequestValidated = (req, res, next) => {
 }
 
 exports.requireAuthorization = (req, res, next) => {
-    const token = req.headers.authorization.split(" ")[1]
-    const user = jwt.verify(token,JWT_KEY)
 
-    req.user = user
+    if(req.headers.authorization) {
+        const token = req.headers.authorization.split(" ")[1]
+        const user = jwt.verify(token,JWT_KEY)    
+        req.user = user
+    }
+    else {
+        return res.status(500).json({message:'Authorization Required'})
+    }
+    next()
+}
+
+exports.isAdminAuthorized = (req, res, next) => {
+
+    if(!req.user.isAdmin) {
+        return res.status(400).json({message:'Access Denied'})
+    }
     next()
 }
