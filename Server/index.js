@@ -8,7 +8,7 @@ const app = express()
 
 const url = 'mongodb://localhost/thrift_store'
 
-mongoose.connect(url, {useNewUrlParser:true,useUnifiedTopology: true, useFindAndModify: false})
+mongoose.connect(url, {useNewUrlParser:true,useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true})
 const con = mongoose.connection
 
 con.on('open', () => {
