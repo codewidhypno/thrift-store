@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
 require('./app/Routes/category.routes')(app)
 require('./app/Routes/user.routes')(app)
 require('./app/Routes/Admin/user.routes')(app)
+require('./app/Routes/product.routes')(app)
 
 app.listen(9000, () => {
     console.log('Server started')
